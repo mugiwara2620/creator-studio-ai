@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: creator-studio-backend
+
+  # 1. Database Configuration (PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/creator_studio_db
+    username: postgres       # username PostgreSQL
+    password: G130502880@Aymane       # password 
+    driver-class-name: org.postgresql.Driver
+
+  # 2. JPA / Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: create       # create Tables in PostgreSQL
+    show-sql: true           # show SQL queries in Console
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# 3. FastAPI Service URL
+ai-service:
+  base-url: http://localhost:8000
