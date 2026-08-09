@@ -1,8 +1,10 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from app.schemas import ScriptRequest, ScriptResponse
 from app.services import ScriptGeneratorService
+from app.sse_services import SSEScriptGeneratorService
 
 app = FastAPI(
     title="Creator Studio AI",
@@ -20,6 +22,7 @@ app.add_middleware(
 
 # Initialize the script generation service instance
 script_service = ScriptGeneratorService()
+sse_script_service = SSEScriptGeneratorService()
 
 @app.get("/", tags=["Health Check"])
 async def health_check():
@@ -50,8 +53,15 @@ async def generate_script(request: ScriptRequest):
             detail=f"Failed to generate script via Ollama: {str(e)}"
         )
     return response
+
+@app.post("/generate-script/stream")
+async def stream_script(request: ScriptRequest):
+    return StreamingResponse(
+        sse_script_service.generate_script_stream(request),
+        media_type="text/event-stream"
+    )
+
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="[IP_ADDRESS]", port=8000, reload=True)
 
     
-        
