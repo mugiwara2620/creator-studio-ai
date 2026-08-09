@@ -168,99 +168,101 @@ export const ScriptStudio: React.FC = () => {
                 </section>
 
                 {/* RIGHT COLUMN: Timeline & Teleprompter Viewer */}
+
                 <section className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
-                    {script ? (
-                        <div className="space-y-6">
-                            {/* Header Info */}
-                            <div className="flex items-start justify-between border-b border-slate-800 pb-4">
-                                <div>
-                                    <span className="inline-block px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold text-indigo-400 bg-indigo-950/60 border border-indigo-800/50 rounded-md mb-2">
-                                        {script.platform} • {script.tone}
-                                    </span>
-                                    <h2 className="text-xl font-bold text-slate-100">{script.title}</h2>
-                                </div>
-                                <button
-                                    onClick={handleCopyScript}
-                                    className="p-2 text-slate-400 hover:text-white bg-slate-950 border border-slate-800 rounded-lg flex items-center gap-1.5 text-xs transition-colors"
-                                >
-                                    {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                                    {copied ? 'Copied' : 'Copy All'}
-                                </button>
-                            </div>
-
-                            {/* Hook */}
-                            <div className="bg-slate-950/80 border-l-4 border-indigo-500 p-4 rounded-r-xl">
-                                <span className="text-[10px] uppercase tracking-wider font-bold text-indigo-400">Hook</span>
-                                <p className="text-sm font-medium text-slate-200 mt-1">{script.hook}</p>
-                            </div>
-
-                            {/* Timeline Segments */}
-                            <div>
-                                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-                                    Timeline Segments ({script.body?.length || 0})
-                                </h3>
-
-                                <div className="space-y-3 max-h-[420px] overflow-y-auto pr-2 custom-scrollbar">
-                                    {script.body?.map((segment, index) => (
-                                        <div
-                                            key={index}
-                                            className="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3.5 flex flex-col sm:flex-row gap-3 items-start hover:border-slate-700 transition-colors"
-                                        >
-                                            <span className="bg-slate-800 text-indigo-300 font-mono text-xs px-2.5 py-1 rounded-md shrink-0">
-                                                {segment.timestamp}
-                                            </span>
-
-                                            <div className="space-y-2 flex-1 text-xs">
-                                                {segment.spoken_text && (
-                                                    <div className="flex items-start gap-2">
-                                                        <MessageSquare className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
-                                                        <p className="text-slate-200 leading-relaxed font-normal">
-                                                            {segment.spoken_text}
-                                                        </p>
-                                                    </div>
-                                                )}
-
-                                                {segment.visual_description && (
-                                                    <div className="flex items-start gap-2 bg-slate-900/80 p-2 rounded-lg border border-slate-800 text-slate-400">
-                                                        <Eye className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
-                                                        <p className="italic leading-relaxed">{segment.visual_description}</p>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Call To Action & Hashtags */}
-                            <div className="pt-4 border-t border-slate-800 space-y-3">
-                                {script.call_to_action && (
+                    {loading ? <div> loading...</div> :
+                        script ? (
+                            <div className="space-y-6">
+                                {/* Header Info */}
+                                <div className="flex items-start justify-between border-b border-slate-800 pb-4">
                                     <div>
-                                        <span className="text-[10px] uppercase font-bold text-slate-400">Call To Action</span>
-                                        <p className="text-xs text-indigo-300 mt-0.5">{script.call_to_action}</p>
+                                        <span className="inline-block px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold text-indigo-400 bg-indigo-950/60 border border-indigo-800/50 rounded-md mb-2">
+                                            {script.platform} • {script.tone}
+                                        </span>
+                                        <h2 className="text-xl font-bold text-slate-100">{script.title}</h2>
                                     </div>
-                                )}
+                                    <button
+                                        onClick={handleCopyScript}
+                                        className="p-2 text-slate-400 hover:text-white bg-slate-950 border border-slate-800 rounded-lg flex items-center gap-1.5 text-xs transition-colors"
+                                    >
+                                        {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                                        {copied ? 'Copied' : 'Copy All'}
+                                    </button>
+                                </div>
 
-                                {script.suggested_hashtags && script.suggested_hashtags.length > 0 && (
-                                    <div className="flex flex-wrap gap-1.5">
-                                        {script.suggested_hashtags.map((tag, i) => (
-                                            <span key={i} className="text-[11px] text-cyan-400 bg-cyan-950/40 border border-cyan-800/40 px-2 py-0.5 rounded-full">
-                                                {tag.startsWith('#') ? tag : `#${tag}`}
-                                            </span>
+                                {/* Hook */}
+                                <div className="bg-slate-950/80 border-l-4 border-indigo-500 p-4 rounded-r-xl">
+                                    <span className="text-[10px] uppercase tracking-wider font-bold text-indigo-400">Hook</span>
+                                    <p className="text-sm font-medium text-slate-200 mt-1">{script.hook}</p>
+                                </div>
+
+                                {/* Timeline Segments */}
+                                <div>
+                                    <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+                                        Timeline Segments ({script.body?.length || 0})
+                                    </h3>
+
+                                    <div className="space-y-3 max-h-[420px] overflow-y-auto pr-2 custom-scrollbar">
+                                        {script.body?.map((segment, index) => (
+                                            <div
+                                                key={index}
+                                                className="bg-slate-950/50 border border-slate-800/80 rounded-xl p-3.5 flex flex-col sm:flex-row gap-3 items-start hover:border-slate-700 transition-colors"
+                                            >
+                                                <span className="bg-slate-800 text-indigo-300 font-mono text-xs px-2.5 py-1 rounded-md shrink-0">
+                                                    {segment.timestamp}
+                                                </span>
+
+                                                <div className="space-y-2 flex-1 text-xs">
+                                                    {segment.spoken_text && (
+                                                        <div className="flex items-start gap-2">
+                                                            <MessageSquare className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
+                                                            <p className="text-slate-200 leading-relaxed font-normal">
+                                                                {segment.spoken_text}
+                                                            </p>
+                                                        </div>
+                                                    )}
+
+                                                    {segment.visual_description && (
+                                                        <div className="flex items-start gap-2 bg-slate-900/80 p-2 rounded-lg border border-slate-800 text-slate-400">
+                                                            <Eye className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+                                                            <p className="italic leading-relaxed">{segment.visual_description}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
                                         ))}
                                     </div>
-                                )}
+                                </div>
+
+                                {/* Call To Action & Hashtags */}
+                                <div className="pt-4 border-t border-slate-800 space-y-3">
+                                    {script.call_to_action && (
+                                        <div>
+                                            <span className="text-[10px] uppercase font-bold text-slate-400">Call To Action</span>
+                                            <p className="text-xs text-indigo-300 mt-0.5">{script.call_to_action}</p>
+                                        </div>
+                                    )}
+
+                                    {script.suggested_hashtags && script.suggested_hashtags.length > 0 && (
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {script.suggested_hashtags.map((tag, i) => (
+                                                <span key={i} className="text-[11px] text-cyan-400 bg-cyan-950/40 border border-cyan-800/40 px-2 py-0.5 rounded-full">
+                                                    {tag.startsWith('#') ? tag : `#${tag}`}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-slate-500 space-y-3 text-center">
-                            <Video className="w-12 h-12 stroke-[1.2] text-slate-700" />
-                            <div>
-                                <p className="text-sm font-medium text-slate-400">No script generated yet</p>
-                                <p className="text-xs">Fill in the parameters on the left and hit Generate.</p>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-slate-500 space-y-3 text-center">
+                                <Video className="w-12 h-12 stroke-[1.2] text-slate-700" />
+                                <div>
+                                    <p className="text-sm font-medium text-slate-400">No script generated yet</p>
+                                    <p className="text-xs">Fill in the parameters on the left and hit Generate.</p>
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
                 </section>
 
             </main>
